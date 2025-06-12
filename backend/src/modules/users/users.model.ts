@@ -1,7 +1,7 @@
 import { Model, DataTypes, UUIDV4, Optional } from "sequelize";
 import sequelize from "../../config/db";
 
-interface UserAttributes {
+export interface UserAttributes {
   id: number;
   uuid: string;
   name: string;
@@ -10,7 +10,7 @@ interface UserAttributes {
   password: string;
 }
 
-interface UserCreationAttributes
+export interface UserCreationAttributes
   extends Optional<UserAttributes, "id" | "uuid"> {}
 
 class User
