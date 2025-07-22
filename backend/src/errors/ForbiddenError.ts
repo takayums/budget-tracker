@@ -1,4 +1,4 @@
-import HttpError from "./HttpError";
+import HttpError from "@/errors/HttpError";
 
 class ForbiddenError extends HttpError {
   constructor(message: string) {

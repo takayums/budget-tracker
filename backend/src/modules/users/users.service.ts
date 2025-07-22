@@ -1,7 +1,8 @@
 import bcrypt from "bcrypt";
-import BadRequestError from "../../errors/BadRequestError";
-import ServerError from "../../errors/ServerError";
-import User, { UserAttributes } from "./users.model";
+import BadRequestError from "@/errors/BadRequestError";
+import ServerError from "@/errors/ServerError";
+import NotFoundError from "@/errors/NotFoundError";
+import User, { UserAttributes } from "@/modules/users/users.model";
 
 /**
  * @class UserService
@@ -27,7 +28,16 @@ class UserService {
   public async getById(
     id: number,
   ): Promise<Omit<UserAttributes, "password"> | null> {
-    return await User.findByPk(id, { attributes: { exclude: ["password"] } });
+    const user = await User.findByPk(id, {
+      attributes: { exclude: ["password"] },
+    });
+    console.log(process.env.NODE_ENV === "development");
+
+    if (!user) {
+      throw new NotFoundError("User tidak ditemukan");
+    }
+
+    return user;
   }
 
   /**
@@ -104,10 +114,24 @@ class UserService {
    */
 
   public async delete(id: number): Promise<boolean> {
-    const user = await User.findByPk(id);
-    if (!user) return false;
-    await user.destroy();
-    return true;
+    try {
+      console.log(">> [Service] delete() dipanggil dengan ID:", id);
+
+      const user = await User.findByPk(id);
+      console.log(">> [Service] Hasil findByPk:", user);
+
+      if (!user) {
+        console.log(">> [Service] User tidak ditemukan, lempar NotFoundError");
+        throw new NotFoundError("Data User tidak ditemukan");
+      }
+
+      await user.destroy();
+      console.log(">> [Service] User berhasil dihapus");
+      return true;
+    } catch (error) {
+      console.error(">> [Service] Terjadi error di delete():", error);
+      throw error; // biar controller bisa tangani
+    }
   }
 }
 

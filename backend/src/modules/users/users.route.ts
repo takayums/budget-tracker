@@ -1,12 +1,12 @@
 import express from "express";
-import asyncErrorHanlder from "../../errors/asyncErrorHandler";
-import usersController from "./users.controller";
+import asyncErrorHanlder from "@/errors/asyncErrorHandler";
+import validateRequest from "@/middlewares/validation.middleware";
+import usersController from "@/modules/users/users.controller";
 import {
   createUsersValidator,
   idParamsValidator,
   updateUsersValidator,
-} from "./users.validator";
-import validateRequest from "../../middlewares/validation.middleware";
+} from "@/modules/users/users.validator";
 
 const route = express.Router();
 

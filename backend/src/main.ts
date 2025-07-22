@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { config } from "./config/config";
-import db from "../models";
-import app from "./app";
+import config from "@/config/config";
+import db from "@models/db";
+import app from "@/app";
 
 const port = config.server.port || 5001;
 

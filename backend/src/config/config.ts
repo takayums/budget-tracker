@@ -6,7 +6,7 @@ dotenv.config({
 
 const dbDialect = "mysql";
 
-export const config = {
+const config = {
   db: {
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
@@ -27,3 +27,5 @@ export const config = {
     openRouter: process.env.OPEN_ROUTER_API_KEY,
   },
 };
+
+export default config;

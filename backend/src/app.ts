@@ -1,19 +1,20 @@
 import express, { NextFunction, Request, Response } from "express";
-import { errorHandlerMiddleware } from "./middlewares/errorHandler.middleware";
+import router from "@/routes";
+import { errorHandlerMiddleware } from "@/middlewares/errorHandler.middleware";
 import {
   enableCors,
   setSecurityHeaders,
-} from "./middlewares/security.moddleware";
-import router from "./routes";
+} from "@/middlewares/security.moddleware";
 
 const app = express();
 
 app.use(express.json());
 app.use(enableCors);
 app.use(setSecurityHeaders);
-app.use(errorHandlerMiddleware);
 
 app.use("/api/v1", router);
+
+app.use(errorHandlerMiddleware);
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   const status = err.status || 500;

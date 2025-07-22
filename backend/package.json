@@ -2,9 +2,11 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "rest api budget tracker",
-  "main": "src/main.ts",
+  "main": "./src/main.ts",
   "scripts": {
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "start": "ts-node --project ./tsconfig.json -r tsconfig-paths/register ./src/main.ts",
+    "build": "tsc && tsc-alias"
   },
   "author": "takayumsdev",
   "license": "ISC",
@@ -16,6 +18,8 @@
     "prettier": "3.5.3",
     "sequelize-cli": "^6.6.3",
     "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.16",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.3"
   },
   "dependencies": {

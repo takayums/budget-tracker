@@ -1,6 +1,6 @@
 import express, { Response, Request } from "express";
-import userRoutes from "./modules/users/users.route";
-import NotFoundError from "./errors/NotFoundError";
+import NotFoundError from "@/errors/NotFoundError";
+import userRoutes from "@/modules/users/users.route";
 
 const router = express.Router();
 

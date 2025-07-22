@@ -36,8 +36,7 @@ const updateUsersValidator = [
     .isLength({ max: 50 })
     .withMessage("Nama maksimal 50 karakter"),
   body("email")
-    .notEmpty()
-    .withMessage("Email harus diisi!")
+    .optional()
     .isEmail()
     .withMessage("Format harus berupa email")
     .isLength({ max: 50 })

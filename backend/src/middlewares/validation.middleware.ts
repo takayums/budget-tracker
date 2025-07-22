@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
+
 function validateRequest(req: Request, res: Response, next: NextFunction) {
   const result = validationResult(req);
   if (!result.isEmpty()) {
@@ -8,6 +9,7 @@ function validateRequest(req: Request, res: Response, next: NextFunction) {
       message: "Validaton Input Gagal",
       errors: result.array().map((e) => ({ params: e.type, msg: e.msg })),
     });
+    return;
   }
   next();
 }

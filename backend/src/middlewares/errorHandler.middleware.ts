@@ -1,5 +1,5 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
-import HttpError from "../errors/HttpError";
+import HttpError from "@/errors/HttpError";
 
 export const errorHandlerMiddleware: ErrorRequestHandler = (
   err: any,
@@ -12,7 +12,7 @@ export const errorHandlerMiddleware: ErrorRequestHandler = (
     return;
   }
 
-  if (process.env.NODE_ENV == "development") {
+  if (process.env.NODE_ENV === "development") {
     if (err instanceof Error) {
       res.status(500).json({ success: false, message: err.message });
       return;

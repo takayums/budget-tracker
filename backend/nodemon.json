@@ -1,5 +1,6 @@
 {
-  "watch": ["src"],
-  "ext": "ts",
-  "exec": "ts-node ./src/main.ts"
+  "watch": ["./"],
+  "ext": "ts,json",
+  "ignore": ["dist"],
+  "exec": "npm run start"
 }

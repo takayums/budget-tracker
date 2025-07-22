@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import UserService from "./users.service";
-import NotFoundError from "../../errors/NotFoundError";
-import BadRequestError from "../../errors/BadRequestError";
+import NotFoundError from "@/errors/NotFoundError";
+import BadRequestError from "@/errors/BadRequestError";
+import UserService from "@/modules/users/users.service";
 
 /**
  * @class UserClass
@@ -103,7 +103,7 @@ class UserController {
       if (!user) throw new NotFoundError("Data User Tidak Ditemukan");
       res
         .status(200)
-        .json({ succes: true, message: "User berhasil di hapus", data: user });
+        .json({ succes: true, message: "User berhasil di update", data: user });
     } catch (err) {
       next(err);
     }
