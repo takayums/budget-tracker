@@ -121,7 +121,8 @@
     "models/**/*.ts",
     "migrations/**/*.ts",
     "seeders/**/*.ts",
-    "config/**/*.ts"
+    "config/**/*.ts",
+    "config/config.json"
   ],
   "exclude": ["node_modules"],
   "ts-node": {

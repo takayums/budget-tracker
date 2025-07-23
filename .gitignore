@@ -6,6 +6,7 @@ dist/
 backend/node_modules
 backend/.env
 backend/dist
+backend/config/
 
 # Frontend
 frontend/node_modules
