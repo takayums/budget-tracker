@@ -26,6 +26,13 @@ class User
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+
+  static associate(models: any) {
+    User.hasMany(models.Transaction, {
+      foreignKey: "user_id",
+      as: "transaction",
+    });
+  }
 }
 
 User.init(

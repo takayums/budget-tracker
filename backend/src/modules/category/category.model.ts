@@ -22,6 +22,13 @@ class Category
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+
+  static associate(models: any) {
+    Category.hasMany(models.Transaction, {
+      foreignKey: "category_id",
+      as: "transaction",
+    });
+  }
 }
 
 Category.init(
