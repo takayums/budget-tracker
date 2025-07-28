@@ -1,14 +1,45 @@
-node_modules
-dist/
-.env
+# Ignore node_modules everywhere
+**/node_modules
 
-# Backend
-backend/node_modules
-backend/.env
-backend/dist
+# Ignore .env files (baik di root, client, maupun backend)
+.env
+**/.env
+
+# Ignore log files
+*.log
+**/*.log
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore OS or editor-specific files
+.vscode/
+.idea/
+*.swp
+
+# Ignore build output (Next.js, React, etc.)
+**/.next
+**/build
+**/dist
+**/.turbo
 backend/config/
 
-# Frontend
-frontend/node_modules
-frontend/.env
-frontend/dist
+# Ignore coverage or testing output
+**/coverage
+
+# Ignore local environment files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Ignore yarn/pnpm/npm lockfiles if not used
+yarn.lock
+pnpm-lock.yaml
+package-lock.json
+
+# Ignore database or cache files
+**/*.sqlite
+**/*.db
+**/.cache
