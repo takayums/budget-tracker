@@ -13,8 +13,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 import { register } from "@/service/auth";
-import { Alert } from "@/components/ui/alert";
 import { Modal } from "@/components/Modal";
+import Link from "next/link";
 
 function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -25,7 +25,6 @@ function RegisterPage() {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -121,8 +120,8 @@ function RegisterPage() {
             <Button type="submit" form="registerForm" className="w-full">
               {loading ? "Processing..." : "Register"}
             </Button>
-            <Button variant="outline" className="w-full">
-              Go to Login
+            <Button asChild variant="outline" className="w-full">
+              <Link href="/login">Go to Login</Link>
             </Button>
           </CardFooter>
         </Card>

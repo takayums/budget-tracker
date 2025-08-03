@@ -10,3 +10,12 @@ export const register = async (userDataRegister: RegisterData) => {
     handleApiError(error, "Register Failed");
   }
 };
+
+export const login = async (userDataLogin: LoginData) => {
+  try {
+    const response = await api.post("/auth/login", userDataLogin);
+    return response.data;
+  } catch (error) {
+    handleApiError(error, "Login Failed");
+  }
+};
