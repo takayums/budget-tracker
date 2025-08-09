@@ -2,7 +2,6 @@ import { NextFunction, Response, Request } from "express";
 import { UserRequest } from "@/type/user.request";
 import TransactionService from "@/modules/transaction/transaction.service";
 import ForbiddenError from "@/errors/ForbiddenError";
-import Transaction from "./transaction.model";
 
 class TransactionController {
   async getAll(req: UserRequest, res: Response, next: NextFunction) {
@@ -29,10 +28,9 @@ class TransactionController {
     try {
       const id = parseInt(req.params.id, 10);
       const transaction = await TransactionService.getById(id);
-      // if (transaction.user_id !== id) {
-      //   throw new ForbiddenError("Kamu tidak bisa akses transaksi ini");
-      //   return;
-      // }
+      if (transaction.user_id !== id) {
+        throw new ForbiddenError("Kamu tidak bisa akses transaksi ini");
+      }
       res.status(200).json({
         success: true,
         message: "Transaksi ditemukan",
