@@ -91,8 +91,8 @@ class TransactionService {
     for (const tx of transaction) {
       const amount = parseInt(tx.amount);
 
-      if (tx.type === "expense") totalExpense + amount;
-      if (tx.type === "income") totalIncome + amount;
+      if (tx.type === "expense") totalExpense += amount;
+      if (tx.type === "income") totalIncome += amount;
     }
 
     const amountAddExpense = parseInt(data.amount);
@@ -101,6 +101,7 @@ class TransactionService {
       data.type === "expense" &&
       totalIncome < totalExpense + amountAddExpense
     ) {
+      console.log(totalIncome, totalExpense);
       throw new BadRequestError("Income bulan ini tidak mencukupi");
     }
 
