@@ -2,6 +2,7 @@ import { NextFunction, Response, Request } from "express";
 import { UserRequest } from "@/type/user.request";
 import TransactionService from "@/modules/transaction/transaction.service";
 import ForbiddenError from "@/errors/ForbiddenError";
+import transactionService from "@/modules/transaction/transaction.service";
 
 class TransactionController {
   async getAll(req: UserRequest, res: Response, next: NextFunction) {
@@ -81,6 +82,69 @@ class TransactionController {
       res
         .status(200)
         .json({ succes: true, message: "transaksi sudah di hapus" });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getMonthlySummary(req: UserRequest, res: Response, next: NextFunction) {
+    try {
+      const summary = await TransactionService.getMonthlySummary(
+        req.userId as number,
+      );
+      res.status(200).json({
+        success: true,
+        message: "Berhasil mendapatkan Summary",
+        data: summary,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getMonthlyChart(req: UserRequest, res: Response, next: NextFunction) {
+    try {
+      const summaryChart = await transactionService.getMonthlyChart(
+        req.userId as number,
+      );
+      res.status(200).json({
+        success: true,
+        message: "Berhasil dapatkan Summary Chart",
+        data: summaryChart,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getTodayTransaction(
+    req: UserRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
+    try {
+      const transaction = await TransactionService.getTodayTransaction(
+        req.userId as number,
+      );
+      res.status(200).json({
+        success: true,
+        message: "Berhasil dapatkan transaksi hari ini",
+        data: transaction,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getTodayExpense(req: UserRequest, res: Response, next: NextFunction) {
+    try {
+      const data = await TransactionService.getTodayExpenseStats(
+        req.userId as number,
+      );
+      res
+        .status(200)
+        .json({
+          succes: true,
+          message: "data pengeluaran hari ini berhasil di ambil",
+          data,
+        });
     } catch (error) {
       next(error);
     }

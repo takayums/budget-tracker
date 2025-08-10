@@ -139,11 +139,142 @@ class TransactionService {
     }
     return await transaction.update(data);
   }
+
   async delete(id: number) {
     const transaction = await Transaction.findByPk(id);
     if (!transaction) throw new NotFoundError("Transaksi Tidak ditemukan");
     await transaction.destroy();
     return true;
+  }
+
+  async getMonthlySummary(userId: number) {
+    const now = new Date();
+    const startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+    const endData = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+    const transactions = await Transaction.findAll({
+      where: {
+        user_id: userId,
+        date: {
+          [Op.between]: [startDate, endData],
+        },
+      },
+    });
+
+    let totalIncome = 0;
+    let totalExpense = 0;
+
+    for (const tx of transactions) {
+      const amount = parseInt(tx.amount);
+
+      if (tx.type === "income") totalIncome += amount;
+      if (tx.type === "expense") totalExpense += amount;
+    }
+
+    const balance = totalIncome - totalExpense;
+    const saving = Math.floor(
+      Math.max(0, totalIncome - totalExpense) * 0.3 + totalIncome * 0.05,
+    );
+
+    return { income: totalIncome, expense: totalExpense, balance, saving };
+  }
+
+  async getMonthlyChart(userId: number) {
+    const now = new Date();
+    const startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+    const endData = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+    const transactions = await Transaction.findAll({
+      where: {
+        user_id: userId,
+        date: {
+          [Op.between]: [startDate, endData],
+        },
+      },
+    });
+
+    const daysInMonth = endData.getDate();
+    const charts = [];
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      charts.push({
+        data: `${now.getFullYear()} - ${String(now.getMonth() + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`,
+        income: 0,
+        expense: 0,
+      });
+    }
+
+    for (const tx of transactions) {
+      const date = new Date(tx.date);
+      const day = date.getDate();
+      const amount = parseInt(tx.amount);
+
+      if (charts[day - 1]) {
+        if (tx.type === "income") charts[day - 1].income += amount;
+        if (tx.type === "expense") charts[day - 1].expense += amount;
+      }
+    }
+
+    return charts;
+  }
+
+  async getTodayTransaction(userId: number) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 56, 999);
+
+    const transaction = await Transaction.findAll({
+      where: {
+        user_id: userId,
+        date: { [Op.between]: [today, endOfDay] },
+      },
+      order: [["date", "DESC"]],
+      include: [
+        {
+          model: Category,
+          attributes: ["name", "description"],
+          as: "category",
+          required: false,
+        },
+        {
+          model: User,
+          attributes: ["id", "name", "email", "number"],
+          as: "user",
+          required: false,
+        },
+      ],
+    });
+
+    return transaction;
+  }
+
+  async getTodayExpenseStats(userId: number) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999);
+
+    const transactions = await Transaction.findAll({
+      where: {
+        user_id: userId,
+        type: "expense",
+        date: {
+          [Op.between]: [today, endOfDay],
+        },
+      },
+      order: [["date", "DESC"]],
+    });
+
+    const total = transactions.reduce(
+      (sum, tx) => sum + parseInt(tx.amount),
+      0,
+    );
+
+    return {
+      total_expense: total,
+      count: transactions.length,
+    };
   }
 }
 
