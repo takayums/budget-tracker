@@ -25,11 +25,11 @@ class TransactionController {
       next(error);
     }
   }
-  async getById(req: Request, res: Response, next: NextFunction) {
+  async getById(req: UserRequest, res: Response, next: NextFunction) {
     try {
       const id = parseInt(req.params.id, 10);
       const transaction = await TransactionService.getById(id);
-      if (transaction.user_id !== id) {
+      if (transaction.user_id !== req.userId) {
         throw new ForbiddenError("Kamu tidak bisa akses transaksi ini");
       }
       res.status(200).json({
@@ -138,13 +138,11 @@ class TransactionController {
       const data = await TransactionService.getTodayExpenseStats(
         req.userId as number,
       );
-      res
-        .status(200)
-        .json({
-          succes: true,
-          message: "data pengeluaran hari ini berhasil di ambil",
-          data,
-        });
+      res.status(200).json({
+        succes: true,
+        message: "data pengeluaran hari ini berhasil di ambil",
+        data,
+      });
     } catch (error) {
       next(error);
     }

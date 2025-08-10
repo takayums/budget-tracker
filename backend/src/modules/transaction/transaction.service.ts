@@ -101,7 +101,6 @@ class TransactionService {
       data.type === "expense" &&
       totalIncome < totalExpense + amountAddExpense
     ) {
-      console.log(totalIncome, totalExpense);
       throw new BadRequestError("Income bulan ini tidak mencukupi");
     }
 
